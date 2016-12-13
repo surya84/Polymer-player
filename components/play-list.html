@@ -1,0 +1,32 @@
+<dom-module id="play-list">
+    <template>
+        <h4> Play List - {{_list.length}}</h4>
+          <template is="dom-repeat" items="{{_list}}" class="player-list">
+              <div>
+            <paper-button raised on-tap="playItem">{{item}}</paper-button></div>
+        </template>
+    </template>
+    <script>
+        Polymer({
+            is: 'play-list',
+            properties: {
+                title: {
+                    value: 'Select a track:',
+                    type: String
+                },
+                _list: {
+                    value: ['Item1', 'Item2', 'Item3', 'Item4', 'Item5', 'Item6', 'Item7'],
+                    type: []
+                }
+            },
+            playItem: function(e) {
+                console.log(e);
+            },
+            attached: function() {
+                this.querySelector('play-list').addEventListener('item-changed', function(e) {
+                    console.log(e.detail);
+                })
+            }
+        });
+    </script>
+</dom-module>

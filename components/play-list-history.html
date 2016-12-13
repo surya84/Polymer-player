@@ -1,0 +1,21 @@
+<dom-module id="play-list-history">
+    <template>
+        <h4>{{title}}</h4>
+        Play List - {{_list.length}}
+    </template>
+    <script>
+        Polymer({
+            is: 'play-list-history',
+            properties: {
+                title: {
+                    value: 'Recently Viewed:',
+                    type: String
+                },
+                _list: {
+                    value: [],
+                    type: []
+                }
+            }
+        });
+    </script>
+</dom-module>

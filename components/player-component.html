@@ -1,0 +1,75 @@
+<link rel="import" href="/bower_components/google-castable-video/google-castable-video.html">
+
+<dom-module id="player-component">
+    <template>
+        <style>
+            :host {
+                display: block;
+            }
+             paper-fab.label {
+                font-size: 10px;
+            }
+            section.controls paper-fab{
+                display: inline-block;
+            }
+        </style>
+        <video is="google-castable-video">
+            <source src="sa.mp3" type="audio/mp3">
+        </video>
+        <section class="controls">
+            <paper-fab icon="{{palyStatusIcon}}" title="play" on-tap="play"></paper-fab>
+            <paper-fab icon="av:stop" title="stop" on-tap="stop"></paper-fab>
+            <paper-fab icon="av:replay" title="reply"></paper-fab>
+    </section>
+
+     <input id="progressSlider" type="range" min="0" max="100" value="0">
+
+    </template>
+    <script>
+        Polymer({
+            is: 'player-component',
+            properties: {
+                isPaused: {
+                    value: true,
+                    type: Boolean
+                },
+                palyStatusIcon: {
+                    value: 'av:play-circle-outline',
+                    type: String
+                }
+            },
+            ready: function() {
+                var vid = document.querySelector("video");
+                var progressSlider = document.querySelector("#progressSlider");
+
+                progressSlider.addEventListener("mouseup", function() {
+                    var duration = vid.duration;
+                    var newPosition = (duration / 100) * this.value;
+                    vid.currentTime = newPosition;
+                });
+
+                vid.addEventListener("google-castable-video-timeupdate", function(e) {
+                    var duration = vid.duration;
+                    var currentTime = e.detail.currentTime;
+                    progressSlider.value = currentTime * (100 / duration);
+                });
+            },
+            play: function(e) {
+                var vid = document.querySelector("video");
+                if (this.isPaused) {
+                    vid.play();
+                    this.isPaused = false;
+                    this.palyStatusIcon = "av:pause";
+                } else {
+                    vid.pause();
+                    this.isPaused = true;
+                    this.palyStatusIcon = "av:play-circle-outline";
+                }
+            },
+            stop: function(e) {
+                var vid = document.querySelector("video");
+                vid.stop();
+            }
+        });
+    </script>
+</dom-module>
